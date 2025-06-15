@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -7,6 +9,7 @@ function Login() {
     const [role, setRole] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const navigate = useNavigate();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -18,14 +21,33 @@ function Login() {
             return;
         }
         
-        // Simulate API call  min-h-screen bg-gray-900 text-white
+    try {
+    const response = await axios.post('http://localhost:5000/login', {
+        username,
+        email,
+        password,
+        role
+    });
+
+    if (response.status === 200) {
+        localStorage.setItem('token', response.data.token);
+
+        setSuccess("Login successful!");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setRole("");
+
         setTimeout(() => {
-            setSuccess("Signup successful! You can now log in.");
-            setUsername("");
-            setEmail("");
-            setPassword("");
-            setRole("");
+            navigate('/userexplore');
         }, 1000);
+    }
+} catch (err) {
+    console.error("Login error:", err);
+    const errorMsg = err.response?.data?.message || "An error occurred during login. Please try again.";
+    setError(errorMsg);
+}
+
     }
 
     return (
@@ -86,7 +108,7 @@ function Login() {
             <div className="mt-6 text-center">
                 <p className="mt-4 text-gray-600">
                     Don't have an account?{" "}
-                    <a href="/register" className="text-blue-500 hover:underline">
+                    <a href="/signup" className="text-blue-500 hover:underline">
                         Register
                     </a>
                 </p>
