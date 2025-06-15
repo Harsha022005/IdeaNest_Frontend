@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -7,6 +9,7 @@ function Login() {
     const [role, setRole] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const navigate = useNavigate();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -18,14 +21,28 @@ function Login() {
             return;
         }
         
-        // Simulate API call  min-h-screen bg-gray-900 text-white
-        setTimeout(() => {
-            setSuccess("Signup successful! You can now log in.");
-            setUsername("");
-            setEmail("");
-            setPassword("");
-            setRole("");
-        }, 1000);
+        try{
+            const response = await axios.post('/login',{email,password,role});
+        if (response.status !== 400) {
+            setError("Login failed. Please check your credentials.");
+            return;
+        } else {
+            // After login success, you can set the user data in local storage or context
+            setTimeout(() => {
+                setSuccess("Login successful!");
+                setUsername("");
+                setEmail("");
+                setPassword("");
+                setRole("");
+            }, 1000);
+            localStorage.setItem('token',response.data.token);
+            navigate('/userexplore');
+        }
+        }
+        catch (err) {
+            console.error("Login error:", err);
+            setError("An error occurred during login. Please try again.");
+        }
     }
 
     return (
