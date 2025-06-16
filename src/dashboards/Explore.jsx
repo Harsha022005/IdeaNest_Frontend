@@ -122,7 +122,7 @@ function Explore() {
                         <div className="flex items-center space-x-6">
                             <a href="/" className="hover:text-blue-400 transition-colors">Home</a>
                             <a href="/explore" className="text-blue-400">Explore</a>
-             <a href="/register" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">Register</a>
+             <a href="/signup" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">Register</a>
                         </div>
                     </div>
                 </div>

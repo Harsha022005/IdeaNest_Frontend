@@ -21,28 +21,35 @@ function Login() {
             return;
         }
         
-        try{
-            const response = await axios.post('/login',{email,password,role});
-        if (response.status !== 400) {
-            setError("Login failed. Please check your credentials.");
-            return;
-        } else {
-            // After login success, you can set the user data in local storage or context
-            setTimeout(() => {
-                setSuccess("Login successful!");
-                setUsername("");
-                setEmail("");
-                setPassword("");
-                setRole("");
-            }, 1000);
-            localStorage.setItem('token',response.data.token);
+    try {
+    const response = await axios.post('http://localhost:5000/login', {
+        username,
+        email,
+        password,
+        role
+    });
+
+    if (response.status === 200) {
+        localStorage.setItem('token', response.data.token);
+
+        setSuccess("Login successful!");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setRole("");
+
+        setTimeout(() => {
             navigate('/userexplore');
-        }
-        }
-        catch (err) {
-            console.error("Login error:", err);
-            setError("An error occurred during login. Please try again.");
-        }
+        }, 1000);
+    }
+
+    
+} catch (err) {
+    console.error("Login error:", err);
+    const errorMsg = err.response?.data?.message || "An error occurred during login. Please try again.";
+    setError(errorMsg);
+}
+
     }
 
     return (
@@ -103,7 +110,7 @@ function Login() {
             <div className="mt-6 text-center">
                 <p className="mt-4 text-gray-600">
                     Don't have an account?{" "}
-                    <a href="/register" className="text-blue-500 hover:underline">
+                    <a href="/signup" className="text-blue-500 hover:underline">
                         Register
                     </a>
                 </p>

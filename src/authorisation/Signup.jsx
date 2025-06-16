@@ -28,10 +28,10 @@ function Signup() {
 
         try {
             console.log("Submitting signup form with:", { username, email, password, role });
-            const response = await axios.post('api/signup', { username, email, password, role });
+           const response = await axios.post('http://localhost:5000/signup', {name: username, email, password, role});
             
             if (response.status !== 201) {
-                setError("Signup failed. Please try again.");
+                setError("Signup failed. Please try again.",error.message);
                 return;
             }
 
