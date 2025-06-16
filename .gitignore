@@ -9,8 +9,12 @@ lerna-debug.log*
 
 # Node packages and lock files
 node_modules/
-package-lock.json
-package.json  # ⚠️ Optional — ignore only if you're not sharing the project config (usually you should NOT ignore this)
+# Uncomment the next line if you want to ignore all .env files
+#.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Build output
 dist/

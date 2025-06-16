@@ -42,6 +42,13 @@ function Login() {
             navigate('/userexplore');
         }, 1000);
     }
+} catch (err) {
+    console.error("Login error:", err);
+    const errorMsg = err.response?.data?.message || "An error occurred during login. Please try again.";
+    setError(errorMsg);
+}
+
+    }
 
     
 } catch (err) {
