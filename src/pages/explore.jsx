@@ -9,7 +9,7 @@ import { User } from "lucide-react";
 import axios from 'axios';
 
 function Explore() {
- const [posts,setposts]=useState('')
+ const [posts,setposts]=useState([])
  const [error,setError]=useState('');
 
  useEffect(()=>{
@@ -19,7 +19,8 @@ function Explore() {
 const fetchposts=async()=>{
   try{
     const response=await axios.get('http://localhost:5000/api/posts')
-    setposts(response);
+    console.log(response.data);
+    setposts(response.data);
     setError(null)
   }
   catch(error){
