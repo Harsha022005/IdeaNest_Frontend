@@ -10,7 +10,7 @@ lerna-debug.log*
 # Node packages and lock files
 node_modules/
 # Uncomment the next line if you want to ignore all .env files
-#.env
+.env
 .env.local
 .env.development.local
 .env.test.local

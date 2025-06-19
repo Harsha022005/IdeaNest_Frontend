@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { GoogleLogin } from '@react-oauth/google';
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -20,43 +21,32 @@ function Login() {
             setError("All fields are required.");
             return;
         }
-        
-    try {
-    const response = await axios.post('http://localhost:5000/login', {
-        username,
-        email,
-        password,
-        role
-    });
 
-    if (response.status === 200) {
-        localStorage.setItem('token', response.data.token);
+        try {
+            const response = await axios.post('http://localhost:5000/login', {
+                username,
+                email,
+                password,
+                role
+            });
 
-        setSuccess("Login successful!");
-        setUsername("");
-        setEmail("");
-        setPassword("");
-        setRole("");
+            if (response.status === 200) {
+                localStorage.setItem('token', response.data.token);
+                setSuccess("Login successful!");
+                setUsername("");
+                setEmail("");
+                setPassword("");
+                setRole("");
 
-        setTimeout(() => {
-            navigate('/userexplore');
-        }, 1000);
-    }
-} catch (err) {
-    console.error("Login error:", err);
-    const errorMsg = err.response?.data?.message || "An error occurred during login. Please try again.";
-    setError(errorMsg);
-}
-
-    }
-
-    
-} catch (err) {
-    console.error("Login error:", err);
-    const errorMsg = err.response?.data?.message || "An error occurred during login. Please try again.";
-    setError(errorMsg);
-}
-
+                setTimeout(() => {
+                    navigate('/userexplore');
+                }, 100);
+            }
+        } catch (err) {
+            console.error("Login error:", err);
+            const errorMsg = err.response?.data?.message || "An error occurred during login. Please try again.";
+            setError(errorMsg);
+        }
     }
 
     return (
@@ -95,7 +85,6 @@ function Login() {
                         placeholder="Password"
                     />
                 </div>
-                
                 <div className="mb-6">
                     <select
                         value={role}
@@ -113,6 +102,19 @@ function Login() {
                 >
                     Login
                 </button>
+
+                <div className="mt-4 flex justify-center">
+                    <GoogleLogin
+                        onSuccess={credentialResponse => {
+                            navigate('/userexplore');
+                            // Send credentialResponse.credential to your backend
+                        }}
+                        onError={() => {
+                            console.log("Google login failed");
+                            setError("Google login failed. Please try again.");
+                        }}
+                    />
+                </div>
             </form>
             <div className="mt-6 text-center">
                 <p className="mt-4 text-gray-600">
