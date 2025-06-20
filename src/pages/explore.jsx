@@ -32,13 +32,13 @@ const fetchposts=async()=>{
     const [selectedTag, setSelectedTag] = React.useState("all");
 
     // Add tags to your posts data
-    const tags = ["Technology", "Education", "Health", "Environment", "Social", "Business"];
+    const tags = ["Technology", "Education", "Health", "Environment", "Social", "Business","AI","ML","CLOUD","IOT"];
 
     // Filter posts based on search term and selected tag
     const filteredPosts = posts.filter(post => {
       const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                  post.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesTag = selectedTag === "all" || post.tag === selectedTag;
+      const matchesTag =selectedTag === "all" ||(post.tags && post.tags.split(',').map(t => t.trim().toLowerCase()).includes(selectedTag.toLowerCase()));
       return matchesSearch && matchesTag;
     });
 
@@ -71,7 +71,7 @@ const fetchposts=async()=>{
             <div className="flex-1">
               <input
                 type="search"
-                placeholder="Search projects..."
+                placeholder="Search project titles..."
                 className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700"
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -103,7 +103,7 @@ const fetchposts=async()=>{
 <div className="relative mt-10 px-4">
   <div className="absolute top-0 right-0 h-full w-16 bg-gradient-to-l from-gray-900 to-transparent pointer-events-none z-10 rounded-r-2xl" />
 
-  <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-blue-600 scrollbar-track-gray-300 pr-4">
+  <div className="">
     <div className="flex flex-row gap-6 min-w-full max-w-[1000px]">
       {filteredPosts.map((post, index) => (
         <div
