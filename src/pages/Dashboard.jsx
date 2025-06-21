@@ -99,6 +99,25 @@ const handleEmailChange = (e) => {
     }
   };
 
+  const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
+
+useEffect(() => {
+  const fetchBookmarks = async () => {
+    const email = localStorage.getItem("userEmail");
+    if (!email) return;
+
+    try {
+      const res = await axios.get(`http://localhost:5000/bookmark/fetch?email=${email}`);
+      setBookmarkedPosts(res.data);
+    } catch (err) {
+      console.error("Error fetching bookmarks:", err);
+    }
+  };
+
+  fetchBookmarks();
+}, []);
+
+
   return (
     <div className="min-h-screen bg-gray-900 text-white font-sans">
       {/* Header */}
@@ -184,7 +203,7 @@ const handleEmailChange = (e) => {
       </button>
     </form>
   ) : (
-    // View Mode (Plain Text)
+   
     <div className="space-y-2">
       <div>
         <label className="block text-gray-400 text-sm">Name</label>
@@ -249,7 +268,7 @@ const handleEmailChange = (e) => {
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <div key={index} className="bg-gray-800 rounded-2xl shadow-xl overflow-hidden transform hover:scale-102 transition-transform duration-300 border border-gray-700 flex flex-col">
-                <img src={post.img} alt={post.title} className="w-full h-52 object-cover" />
+                <img src={post.image} alt={post.title} className="w-full h-52 object-cover" />
                 <div className="p-6 flex flex-col flex-grow">
                   <h3 className="text-2xl font-bold text-white mb-3 leading-tight">{post.title}</h3>
                   <p className="text-gray-300 text-base mb-4 flex-grow line-clamp-3">{post.description}</p>
@@ -274,6 +293,32 @@ const handleEmailChange = (e) => {
           )}
         </div>
       </div>
+
+      <div className="p-8">
+  <h2 className="text-3xl font-bold text-white mb-10 text-center border-3 py-4">Bookmarked Posts</h2>
+  {bookmarkedPosts.length > 0 ? (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {bookmarkedPosts.map((post, index) => (
+        <div key={index} className="bg-gray-800 rounded-xl overflow-hidden shadow-md">
+          <img src={post.image} alt={post.title} className="w-full h-48 object-cover" />
+          <div className="p-5">
+            <h3 className="text-xl font-bold text-white mb-2">{post.title}</h3>
+            <p className="text-gray-400 text-sm line-clamp-2">{post.description}</p>
+            <a
+              href={`/userexplore/${encodeURIComponent(post.title)}`}
+              className="mt-3 inline-block bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 text-sm"
+            >
+              Read More
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p className="text-center text-gray-400">No bookmarks yet. Go explore and bookmark some posts!</p>
+  )}
+</div>
+
     </div>
   );
 }
