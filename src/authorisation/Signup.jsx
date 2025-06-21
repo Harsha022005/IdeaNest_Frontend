@@ -34,14 +34,15 @@ function Signup() {
                 setError("Signup failed. Please try again.",error.message);
                 return;
             }
-
-            setSuccess("Signup successful! You can now log in.");
-            setUsername("");
-            setEmail("");
-            setPassword("");
-            setConfirmPassword("");
-            setRole("");
-            navigate('/userexplore');
+     setSuccess("Signup successful! You can now log in.");
+    setUsername("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setRole("");
+    setTimeout(() => {
+        navigate('/login');
+    }, 1000);
         } catch (err) {
             setError(err.response?.data?.message || "Signup failed. Please try again.");
         }
