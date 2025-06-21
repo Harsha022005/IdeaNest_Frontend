@@ -11,6 +11,10 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Posts from "./pages/posts.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 
+import PersonalChat from './pages/personalchat.jsx';
+import Chat from './pages/Chatinbox.jsx'
+
+
 function App() {
   return (
 <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
@@ -32,6 +36,9 @@ function App() {
             <Route path="/dashboard"
             element={<PrivateRoute><Dashboard/></PrivateRoute>}
             />
+            <Route path="/chat" element={<PersonalChat />} />
+              <Route path="/chatinbox" element={<PrivateRoute><Chat /></PrivateRoute>} />
+
           </Routes>
         </Router>
       </div>
