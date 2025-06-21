@@ -6,6 +6,7 @@ import { FaRegShareSquare } from "react-icons/fa";
 import { CiBookmarkPlus } from "react-icons/ci";
 import { User } from "lucide-react";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 function Dashboard() {
@@ -24,9 +25,12 @@ function Dashboard() {
   const following = ['Harsha', 'Surya', 'Jaswanth', 'Charan'];
   const followers = ['Balaji', 'Naveel', 'Jayanth', 'Yuvaraju'];
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+    useEffect(() => {
+    if (email) {
+      fetchPosts();
+       fetchuserbio();
+    }
+  }, [email]);
 
   useEffect(() => {
   const savedEmail = localStorage.getItem('userEmail');
@@ -35,9 +39,7 @@ function Dashboard() {
   }
 }, []);
 
-  useEffect(()=>{
-    fetchuserbio();
-  },[email])
+ 
 const handleEmailChange = (e) => {
   setemail(e.target.value);
   localStorage.setItem('userEmail', e.target.value);
@@ -50,7 +52,7 @@ const handleEmailChange = (e) => {
     }
     setisediting(false);
   };
-
+   //................Profile updating and fetching route..........
   const updateuserbio = async () => {
     try {
       const response = await axios.post('http://localhost:5000/profile/update', {
@@ -58,11 +60,11 @@ const handleEmailChange = (e) => {
   email,
   bio
 });
-    //   console.log(response)
+    console.log('updating-bio',response)
       if (response.status === 200 || response.status === 201) {
-  setname('');
-  setemail('');
-  setbio('');
+  setname(name);
+  setemail(email);
+  setbio(bio);
   setisediting(false);
 }
     } catch (error) {
@@ -75,7 +77,7 @@ const handleEmailChange = (e) => {
     console.log(email)
     try {
       const response = await axios.get(`http://localhost:5000/profile/fetch?email=${email}`);
-      console.log(response)
+      console.log('fetching-bio',response)
      if (response.data) {
   const user = response.data;
   setname(user.name);
@@ -88,9 +90,10 @@ const handleEmailChange = (e) => {
     }
   };
 
+  // ............ fetch user posts...........
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/posts');
+      const response = await axios.get(`http://localhost:5000/api/posts/fetch?email=${email}`);
       setposts(response.data);
       seterror('');
     } catch (error) {
@@ -135,10 +138,10 @@ useEffect(() => {
             <User className="w-5 h-5" />
             <span className="text-lg font-medium">Post</span>
           </a>
-          <a href="/Chat" className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105">
-            <FiMessageCircle className="w-5 h-5" />
-            <span className="text-lg font-medium">Message</span>
-          </a>
+            <Link to="/chatinbox" className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow-md transition duration-200">
+                     <FiMessageCircle className="w-5 h-5" />
+                     <span className="text-lg font-medium">Message</span>
+                   </Link>
         </div>
       </div>
 
@@ -164,12 +167,16 @@ useEffect(() => {
   {/* Editing Mode */}
   {isediting ? (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        updateuserbio();
-        handlesave(e);
-      }}
-      className="space-y-4"
+      onSubmit={async (e) => {
+    e.preventDefault();
+    if (!name || !email || !bio) {
+      alert('All fields are required to save info');
+      return;
+    }
+    await updateuserbio();
+    setisediting(false);
+  }}
+  className="space-y-4"
     >
       <div>
         <label className="block text-gray-300 mb-1">Name</label>
