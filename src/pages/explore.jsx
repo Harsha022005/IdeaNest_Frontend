@@ -39,7 +39,9 @@ function Explore() {
   //  Fetch user's bookmarked post IDs
   const fetchBookmarkedPosts = async () => {
     const email = localStorage.getItem("userEmail");
-    if (!email) return;
+    if (!email){
+      return null
+    }
 
     try {
       const res = await axios.get(`http://localhost:5000/bookmarks?email=${email}`);
@@ -127,10 +129,14 @@ function Explore() {
             <User className="w-5 h-5" />
             <span className="text-lg font-medium">Dashboard</span>
           </a>
-          <a href="/Chat" className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow-md">
-            <FiMessageCircle className="w-5 h-5" />
-            <span className="text-lg font-medium">Message</span>
-          </a>
+  <Link
+  to="/chatinbox"
+  className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow-md"
+>
+  <FiMessageCircle className="w-5 h-5" />
+  <span className="text-lg font-medium">Message</span>
+</Link>
+
         </div>
       </div>
 
@@ -181,6 +187,7 @@ function Explore() {
                 <div className="p-5">
                   <h2 className="text-xl font-bold text-white mb-2 line-clamp-1">{post.title}</h2>
                   <p className="text-gray-400 text-sm mb-4 line-clamp-3">{post.description}</p>
+                  <p className="text-blue-300 text-xs mb-1">By: {post.name || "Unknown"}</p>
                   <a
                     href={`/userexplore/${encodeURIComponent(post.title)}`}
                     className="inline-block px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200 text-sm font-medium"
