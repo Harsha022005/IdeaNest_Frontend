@@ -1,16 +1,48 @@
-<<<<<<< HEAD
-# React + Vite
+##  Frontend Overview
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+I’ve developed a complete frontend application using **React.js**, designed with a focus on user experience, responsiveness, and real-time interaction.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+###  Features
 
-## Expanding the ESLint configuration
+#### 1.  Explore & Post Management
+- Dynamic post feed with **search** and **tag-based filtering** (e.g., AI, ML, IOT).
+- Users can **like** and **bookmark** posts, with real-time UI updates.
+- Bookmarked posts persist per user using **local storage** and backend sync.
+- Responsive UI built using **Tailwind CSS**.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-=======
-# IdeaNest
->>>>>>> 2b84e787324bd27b91cb1c0f0fd14d4795b45e74
+#### 2.  Real-time Chat System (like WhatsApp)
+- Users can start a **1-on-1 conversation** by clicking the "Message" button on any post.
+- Implemented a **Chat Inbox** to list all previous conversations.
+- Real-time messaging with **Socket.IO**, including:
+  - Room-based chats using dynamic `roomid`
+  - Live message sending and receiving
+  - Full chat history retrieval on refresh
+
+#### 3.  Authentication & Routing
+- Integrated **Google OAuth** for secure user sign-in.
+- Used **React Router** for seamless navigation between:
+  - `Explore`
+  - `Posts`
+  - `Dashboard`
+  - `Chat Inbox`
+  - `Personal Chat Room`
+
+---
+
+###  Tech Stack
+
+- **React.js** – Component-based UI
+- **Axios** – API communication
+- **Socket.IO** – Real-time bi-directional messaging
+- **Tailwind CSS** – Utility-first responsive design
+- **React Router DOM** – Dynamic routing
+- **Google OAuth** – Secure authentication
+
+---
+
+###  Highlight
+
+> "This frontend focuses not just on building features, but delivering a smooth, interactive experience. From responsive design to real-time communication, every element is crafted for usability and performance."
+
