@@ -22,21 +22,31 @@ function Posts() {
   const [success, setSuccess] = useState('');
   const [imagePreview, setImagePreview] = useState('');
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
-    const { title, description, tags, image } = formData;
 
-    if (!title || !description || !tags || !image) {
-      setError('All fields are required including image URL');
-      return;
-    }
+async function handleSubmit(e) {
+  e.preventDefault();
+  setError('');
+  setSuccess('');
 
-    try {
-      const result = await axios.post('http://localhost:5000/userpost', formData);
-       if (result.status === 201) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
+  const { title, description, tags, image } = formData;
+  const email = localStorage.getItem("userEmail"); 
+
+  if (!title || !description || !tags || !image || !email) {
+    setError('All fields including email are required');
+    return;
+  }
+
+  try {
+    const result = await axios.post('http://localhost:5000/userpost', {
+      title,
+      description,
+      tags,
+      image,
+      email, 
+    });
+
+    if (result.status === 201) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
       setFormData({
         title: '',
         description: '',
@@ -45,23 +55,20 @@ function Posts() {
       });
       setImagePreview('');
       setSuccess('Post created successfully!');
-      
-       } else {
-        setError('Unexpected response from server');
-      }
-    } catch (error) {
-      
-      if (error.response) {
-        setError(error.response.data?.message || 'Failed to create post');
-      } else if (error.request) {
-        setError('No response from server. Please try again later.');
-      } else {
-        setError('An error occurred. Please try again.');
-      }
-      
+    } else {
+      setError('Unexpected response from server');
+    }
+  } catch (error) {
+    if (error.response) {
+      setError(error.response.data?.message || 'Failed to create post');
+    } else if (error.request) {
+      setError('No response from server. Please try again later.');
+    } else {
       setError('An error occurred. Please try again.');
     }
   }
+}
+
 
   const handleImageChange = (e) => {
     const url = e.target.value;
