@@ -31,13 +31,13 @@ function Login() {
             });
 
             if (response.status === 200) {
-                localStorage.setItem('token', response.data.token);
-                setSuccess("Login successful!");
+             localStorage.setItem('authToken', response.data.token);
+            localStorage.setItem('userEmail', response.data.email || email); 
                 setUsername("");
                 setEmail("");
                 setPassword("");
                 setRole("");
-
+                setSuccess('Login success')
                 setTimeout(() => {
                     navigate('/userexplore');
                 }, 100);
