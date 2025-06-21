@@ -15,7 +15,8 @@ node_modules/
 .env.development.local
 .env.test.local
 .env.production.local
-
+package-lock.json
+package.json
 # Build output
 dist/
 dist-ssr/
