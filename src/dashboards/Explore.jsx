@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Signup from '../authorisation/Signup.jsx'
 // Simple SVG icon components
 const Lightbulb = ({ className }) => (
@@ -33,64 +33,81 @@ const Eye = ({ className }) => (
 );
 
 function Explore() {
-    const projects = [
+    // Add missing state and data
+    const [projects, setProjects] = useState([]);
+    const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
+    
+    // Dummy data to prevent errors
+    const dummyProjects = [
         {
             id: 1,
-            title: "Swiggy Clone",
-            image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=500&h=300&fit=crop',
-            category: "Web Development",
-            description: "A full-stack food delivery application with real-time order tracking, payment integration, and restaurant management system."
+            title: "AI-Powered Task Manager",
+            description: "A smart task management application that uses AI to prioritize and categorize your daily tasks automatically.",
+            category: "AI/ML",
+            image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop"
         },
         {
             id: 2,
-            title: "E-commerce Platform",
-            image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=300&fit=crop',
+            title: "Real-time Chat Application",
+            description: "A modern chat application built with React and Socket.io featuring real-time messaging and file sharing.",
             category: "Web Development",
-            description: "Modern e-commerce platform with cart functionality, payment gateway, inventory management, and user authentication."
+            image: "https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=400&h=300&fit=crop"
         },
         {
             id: 3,
-            title: "DeFi Social Network",
-            image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=500&h=300&fit=crop',
-            category: "Blockchain",
-            description: "Decentralized social media platform built on blockchain with NFT integration, token rewards, and smart contracts."
-        },
-        {
-            id: 4,
-            title: "Real-time Chat App",
-            image: 'https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=500&h=300&fit=crop',
-            category: "Web Development",
-            description: "Scalable chat application with WebSocket integration, group chats, file sharing, and end-to-end encryption."
-        },
-        {
-            id: 5,
-            title: 'AI Customer Assistant',
-            image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&h=300&fit=crop',
-            category: 'AI/ML',
-            description: "Intelligent chatbot powered by machine learning for customer support with natural language processing and sentiment analysis."
-        },
-        {
-            id: 6,
-            title: 'Crypto Trading Bot',
-            image: 'https://images.unsplash.com/photo-1518544866330-4bf40bf2b9be?w=500&h=300&fit=crop',
-            category: 'Blockchain',
-            description: "Automated cryptocurrency trading bot with technical analysis, risk management, and portfolio optimization algorithms."
-        },
-        {
-            id: 7,
-            title: 'AI Image Generator',
-            image: 'https://images.unsplash.com/photo-1686191128892-34932b2e3b2d?w=500&h=300&fit=crop',
-            category: 'AI/ML',
-            description: "Advanced AI-powered image generation tool using deep learning models for creating unique artwork and designs."
-        },
-        {
-            id: 8,
-            title: 'Mobile Banking App',
-            image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&h=300&fit=crop',
-            category: 'Mobile Development',
-            description: "Secure mobile banking application with biometric authentication, transaction history, and budget tracking features."
+            title: "Mobile E-commerce App",
+            description: "A full-featured e-commerce mobile application with payment integration and order tracking.",
+            category: "Mobile Development",
+            image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop"
         }
     ];
+
+    // Set projects to dummy data if not loaded
+    React.useEffect(() => {
+        if (projects.length === 0) {
+            setProjects(dummyProjects);
+        }
+    }, []);
+
+    // Add missing functions
+    const fetchPosts = async () => {
+        try {
+            // Your API call logic here
+            console.log("Fetching posts...");
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+        }
+    };
+
+    const fetchBookmarkedPosts = async () => {
+        try {
+            // Your API call logic here
+            console.log("Fetching bookmarked posts...");
+        } catch (error) {
+            console.error("Error fetching bookmarked posts:", error);
+        }
+    };
+
+    function isTokenValid(token) {
+        if (!token) return false;
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.exp * 1000 > Date.now();
+        } catch (e) {
+            return false;
+        }
+    }
+
+    useEffect(() => {
+        const token = localStorage.getItem('authToken');
+        const email = localStorage.getItem('userEmail');
+        if (!token || !email) {
+            window.location.href = '/login';
+            return;
+        }
+        fetchPosts();
+        fetchBookmarkedPosts();
+    }, []);
 
     const categories = ['All', ...Array.from(new Set(projects.map(project => project.category)))];
     const [selectedCategory, setSelectedCategory] = useState('All');
@@ -122,7 +139,7 @@ function Explore() {
                         <div className="flex items-center space-x-6">
                             <a href="/" className="hover:text-blue-400 transition-colors">Home</a>
                             <a href="/explore" className="text-blue-400">Explore</a>
-             <a href="/signup" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">Register</a>
+                            <a href="/signup" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">Register</a>
                         </div>
                     </div>
                 </div>
