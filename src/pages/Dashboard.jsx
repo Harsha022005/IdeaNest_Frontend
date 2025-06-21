@@ -7,6 +7,7 @@ import { CiBookmarkPlus } from "react-icons/ci";
 import { User } from "lucide-react";
 import axios from 'axios';
 
+
 function Dashboard() {
   const [showfollowing, setshowfollowing] = useState(false);
   const [showfollowers, setshowfollowers] = useState(false);
@@ -58,11 +59,12 @@ const handleEmailChange = (e) => {
   bio
 });
     //   console.log(response)
-      if (response.status === 201) {
-        setname('');
-        setemail(email)
-        setbio('');
-      }
+      if (response.status === 200 || response.status === 201) {
+  setname('');
+  setemail('');
+  setbio('');
+  setisediting(false);
+}
     } catch (error) {
       console.log(error);
     }
@@ -122,21 +124,81 @@ const handleEmailChange = (e) => {
       </div>
 
       {/* Profile Section */}
-      <div className="ml-10 p-8 bg-gray-900 text-white">
-        <div className="bg-gray-800 rounded-3xl p-8 w-full max-w-3xl shadow-xl border border-gray-700">
-          <div className="flex items-center gap-6">
-            <img
-              src="https://source.unsplash.com/150x150/?portrait,man"
-              alt="Profile"
-              className="w-32 h-32 rounded-full object-cover border-5 border-blue-500 shadow-lg"
-            />
-            <div>
-              <h2 className="text-3xl font-bold mb-2">{name}</h2>
-              <p className="text-gray-300 text-base leading-relaxed">{profile}</p>
-            </div>
-          </div>
+      <div className="ml-10 p-8 bg-gray-900 text-white flex flex-row gap-5 max-w-[2000px] max-h-[900px]">
+        
+        <div>
+                 {/* Edit Profile Section */}
+  <div className="bg-gray-800 rounded-3xl p-8 w-full max-w-5xl shadow-xl border border-gray-700">
+  <div className="flex flex-row justify-between items-center mb-4">
+    <h2 className="text-2xl font-semibold">Profile</h2>
+    <button
+      onClick={() => {
+        // Toggle edit mode
+        setisediting(!isediting);
+      }}
+      className="text-sm bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-full transition"
+    >
+      {isediting ? "Cancel" : "Edit Profile"}
+    </button>
+  </div>
 
-          <div className="flex gap-8 mt-8 justify-center">
+  {/* Editing Mode */}
+  {isediting ? (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        updateuserbio();
+        handlesave(e);
+      }}
+      className="space-y-4"
+    >
+      <div>
+        <label className="block text-gray-300 mb-1">Name</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setname(e.target.value)}
+          className="w-full px-4 py-2 rounded bg-gray-700 text-white focus:outline-none"
+        />
+      </div>
+      <div>
+        <label className="block text-gray-300 mb-1">Email</label>
+        <input
+          type="email"
+          value={email}
+          onChange={handleEmailChange}
+          className="w-full px-4 py-2 rounded bg-gray-700 text-white focus:outline-none"
+        />
+      </div>
+      <div>
+        <label className="block text-gray-300 mb-1">Bio</label>
+        <textarea
+          value={bio}
+          onChange={(e) => setbio(e.target.value)}
+          rows={4}
+          className="w-full px-4 py-2 rounded bg-gray-700 text-white focus:outline-none"
+        />
+      </div>
+      <button type="submit" className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-full text-sm">
+        Save Info
+      </button>
+    </form>
+  ) : (
+    // View Mode (Plain Text)
+    <div className="space-y-2">
+      <div>
+        <label className="block text-gray-400 text-sm">Name</label>
+        <p className="text-white text-lg font-medium">{name || "Not available"}</p>
+      </div>
+      <div>
+        <label className="block text-gray-400 text-sm">Email</label>
+        <p className="text-white text-lg">{email || "Not available"}</p>
+      </div>
+      <div>
+        <label className="block text-gray-400 text-sm">Bio</label>
+        <p className="text-white text-base">{bio || "No bio yet"}</p>
+      </div>
+       <div className="flex gap-8 mt-8 justify-center">
             <div className="relative">
               <button onClick={() => { setshowfollowers(!showfollowers); setshowfollowing(false); }} className="bg-blue-600 px-6 py-3 rounded-full hover:bg-blue-700 text-lg font-medium shadow-md transition-all duration-300 transform hover:scale-105">
                 Followers <span className="ml-2 font-semibold text-blue-100">({followers.length})</span>
@@ -167,7 +229,16 @@ const handleEmailChange = (e) => {
               )}
             </div>
           </div>
-        </div>
+
+    </div>
+  )}
+</div>
+
+            </div>
+            <div className=" mt-8 ">
+                <a className="bg-blue-900 text-2xl p-4 border-2 rounded-2xl ml-[100px]" href="/userpost">Create a Post</a>
+            </div>
+       
       </div>
 
       {/* Posts Section */}
@@ -203,63 +274,6 @@ const handleEmailChange = (e) => {
           )}
         </div>
       </div>
-
-      {/* Edit Profile Section */}
-      <div className="Profile-Edit bg-gray-800 p-6 rounded-xl max-w-xl mx-auto shadow-lg text-white mt-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">Edit Profile</h2>
-          <button onClick={() => setisediting(!isediting)} className="text-sm bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-full transition">
-            {isediting ? "Cancel" : "Edit Profile"}
-          </button>
-        </div>
-
-        {isediting ? (
-          <form onSubmit={(e) => { e.preventDefault(); updateuserbio(); handlesave(e); }} className="space-y-4">
-            <div>
-              <label className="block text-gray-300 mb-1">Name</label>
-              <input type="text" value={name} onChange={(e) => setname(e.target.value)} className="w-full px-4 py-2 rounded bg-gray-700 text-white focus:outline-none" />
-            </div>
-            <div>
-              <label className="block text-gray-300 mb-1">Email</label>
-         <input
-          type="email"
-         value={email}
-          onChange={handleEmailChange}
-           className="w-full px-4 py-2 rounded bg-gray-700 text-white focus:outline-none"
-/>            </div>
-            <div>
-              <label className="block text-gray-300 mb-1">Bio</label>
-              <textarea value={bio} onChange={(e) => setbio(e.target.value)} rows={4} className="w-full px-4 py-2 rounded bg-gray-700 text-white focus:outline-none" />
-            </div>
-            <button type="submit" className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-full text-sm">
-              Save Info
-            </button>
-          </form>
-        ) : (
-          <div>
-            <h3 className="text-xl font-semibold mb-2">{name}</h3>
-            <p className="text-gray-300">{bio}</p>
-          </div>
-        )}
-      </div>
- 
-      {/* Fade-in animation style */}
-      {/* <style jsx>{`
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(10px) translateX(-50%);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) translateX(-50%);
-          }
-        }
-        .animate-fade-in-up {
-          animation: fade-in-up 0.3s ease-out forwards;
-        }
-      `}</style>
-        */}
     </div>
   );
 }

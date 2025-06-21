@@ -274,7 +274,7 @@ function Posts() {
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Popular Tags</h3>
               <div className="flex flex-wrap gap-2">
-                {['AI', 'ML', 'technology', 'design', 'lifestyle', 'photography', 'travel', 'coding'].map((tag) => (
+                {['AI', 'ML', 'technology', 'design', 'lifestyle', 'photography', 'travel', 'coding','IOT'].map((tag) => (
                   <button
                     key={tag}
                     className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-blue-100 hover:text-blue-700 transition-colors"
