@@ -33,6 +33,7 @@ function Login() {
             if (response.status === 200) {
              localStorage.setItem('authToken', response.data.token);
             localStorage.setItem('userEmail', response.data.email || email); 
+            console.log(email)
                 setUsername("");
                 setEmail("");
                 setPassword("");
@@ -104,16 +105,25 @@ function Login() {
                 </button>
 
                 <div className="mt-4 flex justify-center">
-                    <GoogleLogin
-                        onSuccess={credentialResponse => {
-                            navigate('/userexplore');
-                            // Send credentialResponse.credential to your backend
-                        }}
-                        onError={() => {
-                            console.log("Google login failed");
-                            setError("Google login failed. Please try again.");
-                        }}
-                    />
+                                   <GoogleLogin
+                  onSuccess={async credentialResponse => {
+                    try {
+                      // Send credential to your backend
+                 const res = await axios.post('http://localhost:5000/api/auth/google', {
+                      credential: credentialResponse.credential,
+                    });
+                      // Save token and user info
+                      localStorage.setItem('authToken', res.data.token);
+                      localStorage.setItem('userEmail', res.data.email);
+                      navigate('/userexplore');
+                    } catch (err) {
+                      setError("Google login failed. Please try again.");
+                    }
+                  }}
+                  onError={() => {
+                    setError("Google login failed. Please try again.");
+                  }}
+                />
                 </div>
             </form>
             <div className="mt-6 text-center">
