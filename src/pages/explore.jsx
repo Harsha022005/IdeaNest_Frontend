@@ -137,7 +137,7 @@ function Explore() {
 
       {/* Search & Filter */}
       <div className="flex flex-col p-4 sm:p-6">
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="flex flex-col xl:flex-col gap-4 mb-6">
           <input
             type="search"
             placeholder="Search projects..."

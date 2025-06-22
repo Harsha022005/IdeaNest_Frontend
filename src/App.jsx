@@ -2,10 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from './dashboards/Home.jsx';
-import Explore from "./dashboards/Explore.jsx";
 import Signup from "./authorisation/Signup.jsx";
 import Login from "./authorisation/Login.jsx";
-import UserExplore from "./pages/Explore.jsx";
+import Explore from './pages/Explore.jsx';
 import PrivateRoute from "./components/PrivateRoutes.jsx";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Posts from "./pages/posts.jsx";
@@ -27,7 +26,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route
               path="/userexplore"
-              element={<PrivateRoute><UserExplore /></PrivateRoute>}
+              element={<PrivateRoute><Explore/></PrivateRoute>}
             />
             <Route
               path="/userpost"
