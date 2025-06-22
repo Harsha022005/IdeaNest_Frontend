@@ -23,7 +23,7 @@ function Login() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/login", {
+      const response = await axios.post(`${process.env.BACKEND_URL}/login` , {
         username,
         email,
         password,
@@ -105,7 +105,7 @@ function Login() {
           <GoogleLogin
             onSuccess={async (credentialResponse) => {
               try {
-                const res = await axios.post("http://localhost:5000/api/auth/google", {
+                const res = await axios.post(`${process.env.BACKEND_URL}/api/auth/google` , {
                   credential: credentialResponse.credential,
                 });
                 localStorage.setItem("authToken", res.data.token);

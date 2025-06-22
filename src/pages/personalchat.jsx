@@ -7,7 +7,7 @@ import { BsChatDots } from "react-icons/bs";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { User } from "lucide-react";
 
-const socket = io("http://localhost:5000");
+const socket = io(`${process.env.BACKEND_URL}`);
 
 function PersonalChat() {
   const location = useLocation();
@@ -27,7 +27,7 @@ function PersonalChat() {
     socket.emit("join", { roomid });
 
     axios
-      .get("http://localhost:5000/chat/history", { params: { sender, receiver } })
+      .get(`${process.env.BACKEND_URL}/chat/history`, { params: { sender, receiver } })
       .then((res) => setMessages(res.data))
       .catch((err) => console.error("Error loading messages:", err));
 

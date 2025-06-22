@@ -30,7 +30,7 @@ function Posts() {
     }
 
     try {
-      const result = await axios.post('http://localhost:5000/userpost', {
+      const result = await axios.post(`${process.env.BACKEND_URL}/userpost`, {
         title, description, tags, image, email,
       });
 

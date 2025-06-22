@@ -12,7 +12,7 @@ function Chatinbox() {
   useEffect(() => {
     const fetchInbox = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/chatinbox?email=${email}`);
+        const response = await axios.get(`${process.env.BACKEND_URL}/chatinbox?email=${email}`);
         setUsers(response.data || []);
       } catch (err) {
         console.log(err);
