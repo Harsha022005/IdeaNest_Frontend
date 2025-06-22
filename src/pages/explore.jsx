@@ -10,7 +10,7 @@ import { User } from "lucide-react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export default function Explore() {
+function Explore() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -220,4 +220,4 @@ export default function Explore() {
   );
 }
 
-// export default Explore;
+export default Explore;

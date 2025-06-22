@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from './dashboards/Home.jsx';
 import Signup from "./authorisation/Signup.jsx";
 import Login from "./authorisation/Login.jsx";
-import Explore from '../src/pages/Explore';
+import Explore from './pages/Explore.jsx';
 import PrivateRoute from "./components/PrivateRoutes.jsx";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Posts from "./pages/posts.jsx";
