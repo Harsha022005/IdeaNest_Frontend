@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import io from "socket.io-client";
+import {io} from "socket.io-client";
 import axios from "axios";
 import { useLocation, Link } from "react-router-dom";
 import { FiSend, FiUser, FiMessageCircle } from "react-icons/fi";
@@ -7,7 +7,10 @@ import { BsChatDots } from "react-icons/bs";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { User } from "lucide-react";
 
-const socket = io(`${process.env.BACKEND_URL}`);
+const socket = io(import.meta.env.VITE_BACKEND_URL, {
+  transports: ['websocket'],
+  withCredentials: true
+});
 
 function PersonalChat() {
   const location = useLocation();
