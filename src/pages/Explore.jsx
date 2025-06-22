@@ -26,7 +26,7 @@ function Explore() {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get(`${process.env.BACKEND_URL}/api/posts`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/posts`);
       setPosts(response.data);
     } catch (error) {
       console.error(error);
@@ -41,7 +41,7 @@ function Explore() {
     }
 
     try {
-        const res = await axios.get(`${process.env.BACKEND_URL}/bookmark/fetch?email=${email}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/bookmark/fetch?email=${email}`);
       setBookmarkedPosts(res.data || []);
     } catch (err) {
       setBookmarkedPosts([]);
@@ -56,7 +56,7 @@ function Explore() {
     }
 
     try {
-      const response = await axios.put(`${process.env.BACKEND_URL}/api/posts/like/${postId}`, { email });
+      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/posts/like/${postId}`, { email });
       const updatedPost = response.data;
       const updatedPosts = [...posts];
       updatedPosts[index] = updatedPost;
@@ -76,7 +76,7 @@ function Explore() {
     let updatedBookmarks;
     if (bookmarkedPosts.includes(postId)) {
       try {
-        await axios.post(`${process.env.BACKEND_URL}/bookmark/remove`, { email, postId });
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/bookmark/remove`, { email, postId });
         updatedBookmarks = bookmarkedPosts.filter((id) => id !== postId);
         setBookmarkedPosts(updatedBookmarks);
       } catch (err) {
@@ -84,7 +84,7 @@ function Explore() {
       }
     } else {
       try {
-        await axios.post(`${process.env.BACKEND_URL}/bookmark/add`, { email, postId });
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/bookmark/add`, { email, postId });
         updatedBookmarks = [...bookmarkedPosts, postId];
         setBookmarkedPosts(updatedBookmarks);
       } catch (err) {

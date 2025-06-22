@@ -52,7 +52,7 @@ function Dashboard() {
 
   const updateuserbio = async () => {
     try {
-      const response = await axios.post(`${process.env.BACKEND_URL}/profile/update`, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/profile/update`, {
         name,
         email,
         bio
@@ -72,7 +72,7 @@ function Dashboard() {
   const fetchuserbio = async () => {
     if (!email) return;
     try {
-      const response = await axios.get(`${process.env.BACKEND_URL}/profile/fetch?email=${email}`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/profile/fetch?email=${email}`);
       console.log('fetching-bio', response);
       if (response.data) {
         const user = response.data;
@@ -88,7 +88,7 @@ function Dashboard() {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get(`${process.env.BACKEND_URL}/api/posts/fetch?email=${email}`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/posts/fetch?email=${email}`);
       setposts(response.data);
       seterror('');
     } catch (error) {
@@ -104,7 +104,7 @@ function Dashboard() {
       const email = localStorage.getItem("userEmail");
       if (!email) return;
       try {
-        const res = await axios.get(`${process.env.BACKEND_URL}/bookmark/fetch?email=${email}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/bookmark/fetch?email=${email}`);
         setBookmarkedPosts(res.data);
       } catch (err) {
         console.error("Error fetching bookmarks:", err);

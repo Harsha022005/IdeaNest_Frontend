@@ -28,7 +28,7 @@ function Signup() {
 
         try {
             console.log("Submitting signup form with:", { username, email, password, role });
-            const response = await axios.post(`${process.env.BACKEND_URL}/signup`, {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/signup`, {
                 name: username,
                 email,
                 password,

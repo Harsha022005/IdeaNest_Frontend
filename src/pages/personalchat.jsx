@@ -27,7 +27,7 @@ function PersonalChat() {
     socket.emit("join", { roomid });
 
     axios
-      .get(`${process.env.BACKEND_URL}/chat/history`, { params: { sender, receiver } })
+      .get(`${import.meta.env.VITE_BACKEND_URL}/chat/history`, { params: { sender, receiver } })
       .then((res) => setMessages(res.data))
       .catch((err) => console.error("Error loading messages:", err));
 

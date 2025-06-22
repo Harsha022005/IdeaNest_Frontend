@@ -30,7 +30,7 @@ function Posts() {
     }
 
     try {
-      const result = await axios.post(`${process.env.BACKEND_URL}/userpost`, {
+      const result = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/userpost`, {
         title, description, tags, image, email,
       });
 
