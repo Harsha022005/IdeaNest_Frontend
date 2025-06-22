@@ -69,7 +69,7 @@ function Posts() {
           <a href="/Dashboard" className="bg-green-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 transition flex items-center gap-1">
             <User className="w-5 h-5" /> Dashboard
           </a>
-          <a href="/Chat" className="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-indigo-700 transition flex items-center gap-1">
+          <a href="/Chatinbox" className="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-indigo-700 transition flex items-center gap-1">
             <FiMessageCircle className="w-5 h-5" /> Message
           </a>
         </div>
