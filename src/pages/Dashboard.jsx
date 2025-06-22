@@ -113,6 +113,47 @@ function Dashboard() {
     fetchBookmarks();
   }, []);
 
+  const handleDeletePost=async (postId)=>{
+    try{
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/userpost/delete`, { postId });
+      setposts(posts.filter(post=> post._id !== postId))
+    }
+    catch(error){
+      alert('Failed to delete post')
+    }
+  }
+
+const [editPostId, setEditPostId] = useState(null);
+const [editTitle, setEditTitle] = useState("");
+const [editDescription, setEditDescription] = useState("");
+const [editTags, setEditTags] = useState("");
+const [editImage, setEditImage] = useState("");
+
+const openEditMode = (post) => {
+  setEditPostId(post._id);
+  setEditTitle(post.title);
+  setEditDescription(post.description);
+  setEditTags(post.tags);
+  setEditImage(post.image);
+};
+const handlepostedit =async(e)=>{
+  e.preventDefault();
+  try{
+    await axios.post(`${import.meta.env.VITE_BACKEND_URL}/userpost/edit`,
+       {
+        postId:editPostId,
+        title:editTitle,
+        description:editDescription,
+         tags: editTags,
+      image: editImage,
+       })
+  }
+  catch(error){
+    console.log(error)
+  }
+}
+
+
   return (
     <div className="min-h-screen bg-gray-900 text-white font-sans">
       {/* Header */}
@@ -279,7 +320,7 @@ function Dashboard() {
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <div
-                key={index}
+                key={post._id || index}
                 className="bg-gray-800 rounded-2xl shadow-xl overflow-hidden transform hover:scale-102 transition-transform duration-300 border border-gray-700 flex flex-col"
               >
                 <img src={post.image} alt={post.title} className="w-full h-40 sm:h-52 object-cover" />
@@ -292,6 +333,21 @@ function Dashboard() {
                   >
                     Read More
                   </a>
+                  <div className="flex gap-2 mt-2">
+                    <button
+                      className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-xs"
+                      onClick={() => handleDeletePost(post._id)}
+                    >
+                      Delete
+                    </button>
+                    {/* edit button */}
+                    <button
+                      className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs"
+                      onClick={() => openEditMode(post)}
+                    >
+                      Edit
+                    </button>
+                  </div>
                   <div className="flex items-center justify-between mt-4 sm:mt-6 text-gray-400">
                     <div className="flex gap-3 sm:gap-4">
                       <AiOutlineLike className="text-2xl sm:text-3xl hover:text-blue-400 cursor-pointer transition-colors duration-200" />
@@ -309,6 +365,48 @@ function Dashboard() {
             <p className="col-span-full text-center text-gray-400 text-lg sm:text-xl py-10">No posts available. Start sharing your ideas!</p>
           )}
         </div>
+        {/* Edit Post */}
+        {editPostId && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <form
+              onSubmit={handlepostedit}
+              className="bg-white text-black p-6 rounded-lg shadow-lg w-full max-w-md"
+            >
+              <h2 className="text-xl font-bold mb-4">Edit Post</h2>
+              <input
+                type="text"
+                value={editTitle}
+                onChange={e => setEditTitle(e.target.value)}
+                className="w-full mb-2 p-2 border rounded"
+                placeholder="Title"
+              />
+              <textarea
+                value={editDescription}
+                onChange={e => setEditDescription(e.target.value)}
+                className="w-full mb-2 p-2 border rounded"
+                placeholder="Description"
+              />
+              <input
+                type="text"
+                value={editTags}
+                onChange={e => setEditTags(e.target.value)}
+                className="w-full mb-2 p-2 border rounded"
+                placeholder="Tags"
+              />
+              <input
+                type="text"
+                value={editImage}
+                onChange={e => setEditImage(e.target.value)}
+                className="w-full mb-2 p-2 border rounded"
+                placeholder="Image URL"
+              />
+              <div className="flex gap-2 mt-4">
+                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+                <button type="button" className="bg-gray-400 text-white px-4 py-2 rounded" onClick={() => setEditPostId(null)}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
 
       {/* Bookmarked Posts Section */}
