@@ -9,7 +9,6 @@ import PrivateRoute from "./components/PrivateRoutes.jsx";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Posts from "./pages/posts.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-
 import PersonalChat from './pages/personalchat.jsx';
 import Chat from './pages/Chatinbox.jsx'
 
