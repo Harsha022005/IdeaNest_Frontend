@@ -62,7 +62,7 @@ function PersonalChat() {
 
   if (!sender || !receiver) {
     return (
-      <div className="text-center mt-10 text-red-500">
+      <div className="text-center mt-10 text-red-500 text-sm sm:text-base">
         Invalid chat session. Please go back and try again.
       </div>
     );
@@ -71,68 +71,67 @@ function PersonalChat() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-200 flex flex-col items-center">
       {/* Navbar */}
-      <div className="w-full bg-gray-800 p-4 sticky top-0 z-50 flex items-center justify-between shadow-md border-b border-gray-700">
+      <div className="w-full bg-gray-800 p-4 sticky top-0 z-50 flex flex-col sm:flex-row items-center justify-between shadow-md border-b border-gray-700">
         <a
           href="/userexplore"
-          className="text-3xl font-extrabold text-white tracking-wide hover:text-blue-400 transition"
+          className="text-2xl sm:text-3xl font-extrabold text-white tracking-wide hover:text-blue-400 transition mb-4 sm:mb-0"
         >
           IdeaNest
         </a>
-
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <a
             href="/userpost"
-            className="flex items-center gap-2 bg-blue-900 hover:bg-blue-800 text-white px-4 py-2 rounded-lg shadow transition"
+            className="flex items-center gap-2 bg-blue-900 hover:bg-blue-800 text-white px-3 sm:px-4 py-2 rounded-lg shadow transition text-sm sm:text-lg"
           >
-            <IoIosAddCircleOutline className="text-2xl" />
-            <span className="text-lg font-medium">Post</span>
+            <IoIosAddCircleOutline className="text-xl sm:text-2xl" />
+            <span className="font-medium">Post</span>
           </a>
           <a
             href="/Dashboard"
-            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow transition"
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-3 sm:px-4 py-2 rounded-lg shadow transition text-sm sm:text-lg"
           >
-            <User className="w-5 h-5" />
-            <span className="text-lg font-medium">Dashboard</span>
+            <User className="w-4 h-4 sm:w-5 sm:h-5" />
+          
           </a>
           <Link
             to="/chatinbox"
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow transition"
+            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 sm:px-4 py-2 rounded-lg shadow transition text-sm sm:text-lg"
           >
-            <FiMessageCircle className="w-5 h-5" />
-            <span className="text-lg font-medium">Message</span>
+            <FiMessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="font-medium">Message</span>
           </Link>
         </div>
       </div>
 
       {/* Chat Container */}
-      <div className="flex flex-col w-full max-w-4xl h-[90vh] bg-white shadow-2xl rounded-2xl overflow-hidden border mt-6">
+      <div className="flex flex-col w-full max-w-4xl min-h-[calc(100vh-120px)] bg-white shadow-2xl rounded-2xl overflow-hidden border mt-4 sm:mt-6 mx-2 sm:mx-0">
         {/* Chat Header */}
-        <div className="flex items-center justify-between px-6 py-4 bg-indigo-600 text-white text-lg font-semibold">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-indigo-600 text-white text-base sm:text-lg font-semibold">
           <div className="flex items-center gap-2">
-            <FiUser className="text-xl" />
-            <span>{receiver}</span>
+            <FiUser className="text-lg sm:text-xl" />
+            <span className="text-sm sm:text-base">{receiver}</span>
           </div>
-          <span className="text-sm text-indigo-200">Room: {roomid}</span>
+          <span className="text-xs sm:text-sm text-indigo-200">Room: {roomid}</span>
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-indigo-50 scrollbar-thin scrollbar-thumb-indigo-300">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-indigo-50 scrollbar-thin scrollbar-thumb-indigo-300">
           {messages.map((msg, index) => (
             <div
               key={index}
               className={`flex ${msg.sender === sender ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`flex items-end space-x-3 ${
+                className={`flex items-end space-x-2 sm:space-x-3 ${
                   msg.sender === sender ? "flex-row-reverse" : ""
                 }`}
               >
-                <div className="w-9 h-9 rounded-full bg-indigo-400 text-white flex items-center justify-center font-bold">
+                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-indigo-400 text-white flex items-center justify-center font-bold text-xs sm:text-sm">
                   {msg.sender.charAt(0).toUpperCase()}
                 </div>
                 <div>
                   <div
-                    className={`px-4 py-2 text-sm rounded-2xl max-w-xs break-words shadow-md ${
+                    className={`px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-2xl max-w-[70%] sm:max-w-xs break-words shadow-md ${
                       msg.sender === sender
                         ? "bg-indigo-500 text-white rounded-br-none"
                         : "bg-white text-gray-800 rounded-bl-none"
@@ -152,20 +151,20 @@ function PersonalChat() {
         </div>
 
         {/* Input Section */}
-        <div className="p-4 bg-white border-t flex items-center gap-3">
-          <BsChatDots className="text-xl text-gray-500" />
+        <div className="sticky bottom-0 p-3 sm:p-4 bg-white border-t flex items-center gap-2 sm:gap-3 z-10">
+          <BsChatDots className="text-lg sm:text-xl text-gray-500" />
           <input
             type="text"
             placeholder="Type your message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="flex-1 border border-gray-300 rounded-full px-3 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
           <button
             onClick={sendMessage}
-            className="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition"
+            className="bg-indigo-600 text-white p-1 sm:p-2 rounded-full hover:bg-indigo-700 transition"
           >
-            <FiSend className="text-lg" />
+            <FiSend className="text-base sm:text-lg" />
           </button>
         </div>
       </div>

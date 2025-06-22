@@ -28,94 +28,106 @@ function Signup() {
 
         try {
             console.log("Submitting signup form with:", { username, email, password, role });
-           const response = await axios.post('http://localhost:5000/signup', {name: username, email, password, role});
-            
+            const response = await axios.post('http://localhost:5000/signup', {
+                name: username,
+                email,
+                password,
+                role
+            });
+
             if (response.status !== 201) {
-                setError("Signup failed. Please try again.",error.message);
+                setError("Signup failed. Please try again.");
                 return;
             }
-     setSuccess("Signup successful! You can now log in.");
-    setUsername("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    setRole("");
-    setTimeout(() => {
-        navigate('/login');
-    }, 1000);
+
+            setSuccess("Signup successful! You can now log in.");
+            setUsername("");
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+            setRole("");
+
+            setTimeout(() => {
+                navigate('/login');
+            }, 1000);
         } catch (err) {
             setError(err.response?.data?.message || "Signup failed. Please try again.");
         }
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-black">
-            <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
-                {error && <div className="mb-4 text-red-600">{error}</div>}
-                {success && <div className="mb-4 text-green-600">{success}</div>}
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
-                        className="text-lg border border-gray-300 rounded-md p-2 w-full"
-                        placeholder="Username"
-                    />
-                </div>
-                <div className="mb-4">
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                        className="text-lg border border-gray-300 rounded-md p-2 w-full"
-                        placeholder="Email"
-                    />
-                </div>
-                <div className="mb-4">
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        className="text-lg border border-gray-300 rounded-md p-2 w-full"
-                        placeholder="Password"
-                    />
-                </div>
-                <div className="mb-4">
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={e => setConfirmPassword(e.target.value)}
-                        className="text-lg border border-gray-300 rounded-md p-2 w-full"
-                        placeholder="Confirm Password"
-                    />
-                </div>
-                <div className="mb-6">
-                    <select
-                        value={role}
-                        onChange={e => setRole(e.target.value)}
-                        className="text-lg border border-gray-300 rounded-md p-2 w-full"
+        <div className="flex items-center justify-center min-h-screen bg-gray-900 px-4 sm:px-6 lg:px-8">
+            <div className="bg-white p-6 sm:p-8 rounded shadow-md w-full max-w-md">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">Sign Up</h2>
+
+                {error && <div className="mb-4 text-red-600 text-sm">{error}</div>}
+                {success && <div className="mb-4 text-green-600 text-sm">{success}</div>}
+
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
+                            className="text-base sm:text-lg border border-gray-300 rounded-md p-2 w-full"
+                            placeholder="Username"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            className="text-base sm:text-lg border border-gray-300 rounded-md p-2 w-full"
+                            placeholder="Email"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            className="text-base sm:text-lg border border-gray-300 rounded-md p-2 w-full"
+                            placeholder="Password"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <input
+                            type="password"
+                            value={confirmPassword}
+                            onChange={e => setConfirmPassword(e.target.value)}
+                            className="text-base sm:text-lg border border-gray-300 rounded-md p-2 w-full"
+                            placeholder="Confirm Password"
+                        />
+                    </div>
+                    <div className="mb-6">
+                        <select
+                            value={role}
+                            onChange={e => setRole(e.target.value)}
+                            className="text-base sm:text-lg border border-gray-300 rounded-md p-2 w-full"
+                        >
+                            <option value="">Select Role</option>
+                            <option value="user">User</option>
+                            <option value="admin">Recruiter</option>
+                        </select>
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="bg-blue-500 text-white text-base sm:text-lg px-4 py-2 rounded-md w-full hover:bg-blue-600 transition duration-200"
                     >
-                        <option value="">Select Role</option>
-                        <option value="user">User</option>
-                        <option value="admin">Recruiter</option>
-                    </select>
+                        Sign Up
+                    </button>
+                </form>
+
+                <div className="mt-6 text-center">
+                    <p className="text-sm text-gray-600">
+                        Already have an account?{" "}
+                        <a href="/login" className="text-blue-500 hover:underline">
+                            Log In
+                        </a>
+                    </p>
                 </div>
-                <button
-                    type="button"
-                    onClick={handleSubmit}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md w-full hover:bg-blue-600 transition"
-                >
-                    Sign Up
-                </button>
-            </div>
-            <div className="mt-6 text-center">
-                <p className="mt-4 text-gray-600">
-                    Already have an account?{" "}
-                    <a href="/login" className="text-blue-500 hover:underline">
-                        Log In
-                    </a>
-                </p>
             </div>
         </div>
     );
