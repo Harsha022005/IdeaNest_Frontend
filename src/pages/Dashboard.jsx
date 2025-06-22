@@ -136,23 +136,34 @@ const openEditMode = (post) => {
   setEditTags(post.tags);
   setEditImage(post.image);
 };
-const handlepostedit =async(e)=>{
+const handlepostedit = async (e) => {
   e.preventDefault();
-  try{
-    await axios.post(`${import.meta.env.VITE_BACKEND_URL}/userpost/edit`,
-       {
-        postId:editPostId,
-        title:editTitle,
-        description:editDescription,
-         tags: editTags,
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/userpost/edit`, {
+      postId: editPostId,
+      title: editTitle,
+      description: editDescription,
+      tags: editTags,
       image: editImage,
-       })
+    });
+    if (res.status === 200 || res.status === 201) {
+      // Update the post in the posts state
+      setposts((prevPosts) =>
+        prevPosts.map((post) =>
+          post._id === editPostId
+            ? { ...post, title: editTitle, description: editDescription, tags: editTags, image: editImage }
+            : post
+        )
+      );
+      setEditPostId(null); // Close the modal
+    } else {
+      alert('Failed to update post');
+    }
+  } catch (error) {
+    alert('Failed to update post');
+    console.log(error);
   }
-  catch(error){
-    console.log(error)
-  }
-}
-
+};
 
   return (
     <div className="min-h-screen bg-gray-900 text-white font-sans">
@@ -321,7 +332,7 @@ const handlepostedit =async(e)=>{
             posts.map((post, index) => (
               <div
                 key={post._id || index}
-                className="bg-gray-800 rounded-2xl shadow-xl overflow-hidden transform hover:scale-102 transition-transform duration-300 border border-gray-700 flex flex-col"
+                className="bg-gray-800 rounded-2xl shadow-xl  transform hover:scale-102 transition-transform duration-300 border border-gray-700 flex flex-col"
               >
                 <img src={post.image} alt={post.title} className="w-full h-40 sm:h-52 object-cover" />
                 <div className="p-4 sm:p-6 flex flex-col flex-grow">
