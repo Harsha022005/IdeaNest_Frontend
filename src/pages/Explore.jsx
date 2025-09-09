@@ -172,22 +172,12 @@ function Explore() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {filteredPosts.map((post, index) => (
               <div key={post._id} className="bg-gray-900 rounded-2xl overflow-hidden shadow-lg w-full sm:w-80 flex-shrink-0 hover:shadow-xl transition-shadow duration-300">
-                <img
-                  src={post.image || "/placeholder.jpg"}
-                  alt={post.title}
-                  className="w-full h-36 sm:h-48 object-cover"
-                  onError={(e) => { e.target.src = "/placeholder.jpg"; }}
-                />
+                <img src={post.image || 'https://via.placeholder.com/400x200?text=No+Image'}
+                   alt={post.title}
+             className="w-full h-40 sm:h-52 object-cover"/>
                 <div className="p-4 sm:p-5">
                   <h2 className="text-lg sm:text-xl font-bold text-white mb-2 line-clamp-1">{post.title}</h2>
                   <p className="text-gray-400 text-xs sm:text-sm mb-4 line-clamp-3">{post.description}</p>
-                  <p className="text-blue-300 text-xs mb-2 sm:mb-3">By: {post.name || "Unknown"}</p>
-                  <a
-                    href={`/userexplore/${encodeURIComponent(post.title)}`}
-                    className="inline-block px-3 sm:px-4 py-1 sm:py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200 text-xs sm:text-sm font-medium"
-                  >
-                    Read More
-                  </a>
                   <div className="flex items-center justify-between mt-4 sm:mt-5 text-blue-300">
                     <div onClick={() => handleLike(post._id, index)} className="flex items-center gap-2 cursor-pointer">
                       <AiOutlineLike className="text-xl sm:text-2xl hover:text-blue-500 transition" />
