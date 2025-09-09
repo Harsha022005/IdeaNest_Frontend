@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Bell, User, Home, PlusCircle, Bookmark, MessageCircle, Hash, Globe, Camera } from 'lucide-react';
 import axios from 'axios';
 import { IoIosAddCircleOutline } from "react-icons/io";
@@ -15,6 +15,32 @@ function Posts() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [imagePreview, setImagePreview] = useState('');
+
+  // Load draft on mount
+  useEffect(() => {
+    const draft = localStorage.getItem('postDraft');
+    if (draft) {
+      const { title, description, image, tags } = JSON.parse(draft);
+      setFormData({
+        title: title || '',
+        description: description || '',
+        image: image || '',
+        tags: tags || '',
+      });
+      setImagePreview(image || '');
+    }
+  }, []);
+
+  // Save draft handler
+  const handleSaveDraft = () => {
+    localStorage.setItem('postDraft', JSON.stringify(formData));
+    setSuccess('Draft saved locally!');
+  };
+
+  // Clear draft after successful post
+  const handlePostSuccess = () => {
+    localStorage.removeItem('postDraft');
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -39,6 +65,7 @@ function Posts() {
         setFormData({ title: '', description: '', tags: '', image: '' });
         setImagePreview('');
         setSuccess('Post created successfully!');
+        handlePostSuccess();
       } else {
         setError('Unexpected response from server');
       }
@@ -92,34 +119,88 @@ function Posts() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="block mb-1 text-sm font-medium">Post Title</label>
-                  <input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full p-3 rounded-lg border border-gray-300 focus:ring-blue-500" placeholder="Title..." />
+                  <input
+                    type="text"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    className="w-full p-3 rounded-lg border border-gray-300 focus:ring-blue-500"
+                    placeholder="Title..."
+                  />
                 </div>
                 <div>
                   <label className="block mb-1 text-sm font-medium">Description</label>
-                  <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={4} className="w-full p-3 rounded-lg border border-gray-300 focus:ring-blue-500" placeholder="Write something..."></textarea>
+                  <textarea
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    rows={4}
+                    className="w-full p-3 rounded-lg border border-gray-300 focus:ring-blue-500"
+                    placeholder="Write something..."
+                  ></textarea>
                   <p className="text-right text-xs text-gray-500">{formData.description.length} characters</p>
                 </div>
                 <div>
                   <label className="block mb-1 text-sm font-medium">Image URL</label>
-                  <input type="text" value={formData.image} onChange={handleImageChange} className="w-full p-3 rounded-lg border border-gray-300 focus:ring-blue-500" placeholder="https://..." />
-                  {imagePreview && <img src={imagePreview} alt="preview" className="mt-3 w-full h-48 object-cover rounded-lg border" onError={() => setImagePreview('')} />}
+                  <input
+                    type="text"
+                    value={formData.image}
+                    onChange={handleImageChange}
+                    className="w-full p-3 rounded-lg border border-gray-300 focus:ring-blue-500"
+                    placeholder="https://..."
+                  />
+                  {imagePreview && (
+                    <img
+                      src={imagePreview}
+                      alt="preview"
+                      className="mt-3 w-full h-48 object-cover rounded-lg border"
+                      onError={() => setImagePreview('')}
+                    />
+                  )}
                 </div>
                 <div>
                   <label className="block mb-1 text-sm font-medium">Tags</label>
-                  <input type="text" value={formData.tags} onChange={(e) => setFormData({ ...formData, tags: e.target.value })} className="w-full p-3 rounded-lg border border-gray-300 focus:ring-blue-500" placeholder="AI, ML..." />
+                  <input
+                    type="text"
+                    value={formData.tags}
+                    onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                    className="w-full p-3 rounded-lg border border-gray-300 focus:ring-blue-500"
+                    placeholder="AI, ML..."
+                  />
                 </div>
                 <div className="flex flex-wrap gap-2 text-sm">
                   {["AI", "ML", "technology", "design", "lifestyle", "photography", "travel", "coding", "IOT"].map(tag => (
-                    <button key={tag} type="button" className="px-3 py-1 bg-gray-100 hover:bg-blue-100 rounded-full" onClick={() => setFormData({ ...formData, tags: formData.tags ? `${formData.tags}, ${tag}` : tag })}>
+                    <button
+                      key={tag}
+                      type="button"
+                      className="px-3 py-1 bg-gray-100 hover:bg-blue-100 rounded-full"
+                      onClick={() =>
+                        setFormData({
+                          ...formData,
+                          tags: formData.tags ? `${formData.tags}, ${tag}` : tag
+                        })
+                      }
+                    >
                       #{tag}
                     </button>
                   ))}
                 </div>
                 <div className="flex justify-between pt-4">
-                  <span className="text-sm text-gray-600 flex items-center gap-1"><Globe className="w-4 h-4" /> Public</span>
+                  <span className="text-sm text-gray-600 flex items-center gap-1">
+                    <Globe className="w-4 h-4" /> Public
+                  </span>
                   <div className="flex gap-2">
-                    <button type="button" className="px-4 py-2 border border-gray-400 rounded-lg hover:bg-gray-100">Save Draft</button>
-                    <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Post</button>
+                    <button
+                      type="button"
+                      onClick={handleSaveDraft}
+                      className="px-4 py-2 border border-gray-400 rounded-lg hover:bg-gray-100"
+                    >
+                      Save Draft
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    >
+                      Post
+                    </button>
                   </div>
                 </div>
               </form>
