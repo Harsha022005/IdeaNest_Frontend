@@ -338,12 +338,7 @@ const handlepostedit = async (e) => {
                 <div className="p-4 sm:p-6 flex flex-col flex-grow">
                   <h3 className="text-lg sm:text-2xl font-bold text-white mb-3 leading-tight">{post.title}</h3>
                   <p className="text-gray-300 text-sm sm:text-base mb-4 flex-grow line-clamp-3">{post.description}</p>
-                  <a
-                    href={`/userexplore/${encodeURIComponent(post.title)}`}
-                    className="inline-block px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 text-xs sm:text-sm font-medium self-start mt-auto"
-                  >
-                    Read More
-                  </a>
+                  
                   <div className="flex gap-2 mt-2">
                     <button
                       className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-xs"
