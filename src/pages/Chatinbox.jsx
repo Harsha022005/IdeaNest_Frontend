@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { IoIosAddCircleOutline } from "react-icons/io";
-import { FiMessageCircle } from "react-icons/fi";
-import { User } from "lucide-react";
+import { IoIosAddCircleOutline } from 'react-icons/io';
+import { FiMessageCircle } from 'react-icons/fi';
+import { User } from 'lucide-react';
 
 function Chatinbox() {
   const email = localStorage.getItem('userEmail');
@@ -14,8 +14,9 @@ function Chatinbox() {
       try {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/chatinbox?email=${email}`);
         setUsers(response.data || []);
+        console.log('Fetched users:', response.data);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
     if (email) fetchInbox();
@@ -75,26 +76,25 @@ function Chatinbox() {
           {users.length === 0 ? (
             <p className="text-gray-400 text-center">No conversations yet. Start chatting!</p>
           ) : (
-            users
-              .filter(user => user && user !== email)
-              .map((user, index) => {
-                const initials = user.split('@')[0].slice(0, 2).toUpperCase();
-                return (
-                  <Link
-                    to={`/chat?sender=${email}&receiver=${user}`}
-                    key={index}
-                    className="flex items-center gap-4 bg-gray-700 hover:bg-blue-600 transition-all duration-200 rounded-lg px-4 sm:px-6 py-3 sm:py-4 shadow-sm cursor-pointer"
-                  >
-                    <div className="bg-blue-500 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full text-base sm:text-lg font-semibold shadow-inner">
-                      {initials}
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-white text-sm sm:text-base font-medium">{user}</span>
-                      <span className="text-xs sm:text-sm text-gray-300">Tap to open chat</span>
-                    </div>
-                  </Link>
-                );
-              })
+            users.map((user, index) => {
+              if (!user || user === email) return null; // Skip invalid or self emails
+              const initials = user.split('@')[0].slice(0, 2).toUpperCase();
+              return (
+                <Link
+                  to={`/chat?sender=${email}&receiver=${user}`}
+                  key={index}
+                  className="flex items-center gap-4 bg-gray-700 hover:bg-blue-600 transition-all duration-200 rounded-lg px-4 sm:px-6 py-3 sm:py-4 shadow-sm cursor-pointer"
+                >
+                  <div className="bg-blue-500 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full text-base sm:text-lg font-semibold shadow-inner">
+                    {initials}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-white text-sm sm:text-base font-medium">{user}</span>
+                    <span className="text-xs sm:text-sm text-gray-300">Tap to open chat</span>
+                  </div>
+                </Link>
+              );
+            })
           )}
         </div>
       </div>
