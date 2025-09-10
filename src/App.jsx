@@ -11,7 +11,6 @@ import Posts from "./pages/posts.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import PersonalChat from "./pages/personalchat.jsx";
 import Chat from "./pages/Chatinbox.jsx";
-import VerifyEmail from "./pages/VerifyEmail.jsx";
 
 function RedirectHandler() {
   const navigate = useNavigate();
@@ -39,7 +38,6 @@ function App() {
             <Route path="/explore" element={<Explore />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/verify" element={<VerifyEmail />} />
 
             <Route
               path="/userexplore"
