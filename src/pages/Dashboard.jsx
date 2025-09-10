@@ -440,12 +440,7 @@ const handlelogout = () => {
                 <div className="p-4 sm:p-5">
                   <h3 className="text-lg sm:text-xl font-bold text-white mb-2">{post.title}</h3>
                   <p className="text-gray-400 text-xs sm:text-sm line-clamp-2">{post.description}</p>
-                  <a
-                    href={`/userexplore/${encodeURIComponent(post.title)}`}
-                    className="mt-3 inline-block bg-blue-600 text-white px-3 sm:px-4 py-1 sm:py-2 rounded-full hover:bg-blue-700 text-xs sm:text-sm"
-                  >
-                    Read More
-                  </a>
+                  
                 </div>
               </div>
             ))}
