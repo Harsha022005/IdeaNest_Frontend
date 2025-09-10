@@ -7,6 +7,7 @@ import { CiBookmarkPlus } from "react-icons/ci";
 import { User } from "lucide-react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const [showfollowing, setshowfollowing] = useState(false);
@@ -164,6 +165,13 @@ const handlepostedit = async (e) => {
     console.log(error);
   }
 };
+const navigate=useNavigate();
+const handlelogout = () => {
+  localStorage.removeItem("authToken");
+  localStorage.removeItem("userEmail");
+  navigate("/login", { replace: true });
+};
+
 
   return (
     <div className="min-h-screen bg-gray-900 text-white font-sans">
@@ -185,6 +193,7 @@ const handlepostedit = async (e) => {
             <FiMessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
             <span className="font-medium">Message</span>
           </Link>
+
         </div>
       </div>
 
@@ -197,10 +206,15 @@ const handlepostedit = async (e) => {
               <h2 className="text-xl sm:text-2xl font-semibold">Profile</h2>
               <button
                 onClick={() => setisediting(!isediting)}
-                className="text-xs sm:text-sm bg-yellow-500 hover:bg-yellow-600 px-3 py-1 sm:px-4 sm:py-2 rounded-full transition"
+                className="ml-[600px] text-xs sm:text-sm bg-yellow-500 hover:bg-yellow-600 px-3 py-1 sm:px-4 sm:py-2 rounded-full transition"
               >
                 {isediting ? "Cancel" : "Edit Profile"}
               </button>
+              <div>
+                <button onClick={handlelogout}  className="text-xs py-3 sm:text-sm bg-yellow-500 hover:bg-yellow-600 px-4    rounded-full transition"
+
+                >Logout</button>
+              </div>
             </div>
 
             {isediting ? (
