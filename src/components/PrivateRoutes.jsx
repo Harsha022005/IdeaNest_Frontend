@@ -1,22 +1,21 @@
 import React, { useEffect } from "react";
-import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 const PrivateRoutes = ({ children }) => {
+  const token = localStorage.getItem("authToken");
 
-  // Sync logout across tabs
   useEffect(() => {
-    const onStorage = () => {
-      if (!localStorage.getItem('authToken')) {
-        window.location.href = '/login';
+    const handleStorageChange = () => {
+      if (!localStorage.getItem("authToken")) {
+        window.location.href = "/login";
       }
     };
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  // check for token in localstorage and expiry time
-  const token = localStorage.getItem('authToken');
   if (!token) {
     return <Navigate to="/login" replace />;
   }
@@ -25,11 +24,11 @@ const PrivateRoutes = ({ children }) => {
     const decoded = jwtDecode(token);
     const currentTime = Date.now() / 1000;
     if (decoded.exp < currentTime) {
-      localStorage.removeItem('authToken');
+      localStorage.removeItem("authToken");
       return <Navigate to="/login" replace />;
     }
   } catch (err) {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("authToken");
     return <Navigate to="/login" replace />;
   }
 
